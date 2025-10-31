@@ -12,6 +12,7 @@
               <th scope="col">NÚMERO</th>
               <th scope="col">NOMBRE</th>
               <th scope="col">LOCALIDAD</th>
+              <th scope="col">ACCIONES</th>
             </tr>
           </thead>
           <tbody>
@@ -19,6 +20,11 @@
               <th scope="row" class="fw-semibold">{{ dept.numero }}</th>
               <td>{{ dept.nombre }}</td>
               <td>{{ dept.localidad }}</td>
+              <td>
+                <router-link :to="'/details/' + dept.numero + '/' + dept.nombre + '/' + dept.localidad" class="btn btn-sm btn-success fw-semibold text-dark me-3">DETAILS</router-link>
+                <router-link :to="'/update/' + dept.numero" class="btn btn-sm btn-warning fw-semibold text-dark me-3">UPDATE</router-link>
+                <button @click="deleteDepartamento()" :v-model="numeroDepartamento" class="btn btn-sm btn-danger fw-semibold text-dark">DELETE</button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -45,13 +51,25 @@ export default {
     return {
       departamentos: [],
       status: null,
+      numeroDepartamento: 0
     };
   },
+  methods:{
+    loadDepartamentos(){
+        service.getDepartamentos().then((result) => {
+            this.departamentos = result;
+            this.status = true;
+        });
+    },
+    deleteDepartamento(){
+        service.deleteDepartamento(this.numeroDepartamento).then(()=>{
+            console.log("Eliminado")
+            this.loadDepartamentos();
+        })
+    }
+  },
   mounted() {
-    service.getDepartamentos().then((result) => {
-      this.departamentos = result;
-      this.status = true;
-    });
+    this.loadDepartamentos();
   },
 };
 </script>

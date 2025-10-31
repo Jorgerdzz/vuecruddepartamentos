@@ -52,9 +52,13 @@ export default {
   name: "CreateDepartamento",
   methods: {
     crearDepartamento() {
-      service
-        .createDepartamento(this.departamento)
-        .then((result) => (this.mensaje = "Insertado" + result));
+      service.createDepartamento(this.departamento).then((result) => 
+        this.mensaje = "Insertado" + result,
+        setTimeout(()=>{
+            this.$router.push("/")
+        }, 3000)
+        
+      );
     },
   },
   data() {
